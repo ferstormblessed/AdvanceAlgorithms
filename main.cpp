@@ -2,9 +2,9 @@
     Actividad 1.1 Implementación de la técnica de programación "divide y vencerás"
 
     Salvador Fernando Camacho Hernandez A01634777
-    Emilio Octavio Vazquez A01635304
+    Emilio Octavio Vazquez FLores A01635304
 
-    Martes 9 de agosto del 2022
+    Miercoles 9 de agosto del 2022
 */
 
 #include <iostream> 
@@ -32,7 +32,7 @@ void merge(float arr[], int start, int mid, int end){
 			start++;
 		}
 		else {
-			int value = arr[start2];
+			float value = arr[start2];
 			int index = start2;
 
 			// Shift all the elements between element 1 
@@ -65,8 +65,6 @@ void mergeSort(float arr[], int l, int r) {
 	}
 }
 
-
-
 void printArray(float arr[], int size) {
     for(int i = 0; i < size; i++){
         cout << arr[i] << " ";
@@ -76,23 +74,26 @@ void printArray(float arr[], int size) {
 int main(int argc, char *argv[]) {
 
     //Get the length of the array from command-line
-    int arrLenght = stoi(argv[1]);
+    int arrLength = 0;
+    cin >> arrLength;
+    
+    cout << "arrLength: " << arrLength << endl;
 
-    float arr[arrLenght];
+    float arr[arrLength];
 
     // Fill the array to sort
-    for(int i = 0; i < arrLenght; i++){
+    for(int i = 0; i < arrLength; i++){
         int num = 0;
         cin >> arr[i];
     }
 
     cout << endl << "Original array" << endl;
-    printArray(arr, arrLenght);
+    printArray(arr, arrLength);
     cout << endl;
 
     cout << endl << "Sorted array" << endl;
-    mergeSort(arr, 0, arrLenght - 1);
-    printArray(arr, arrLenght);
+    mergeSort(arr, 0, arrLength - 1);
+    printArray(arr, arrLength);
     cout << endl << endl;
 
     return 0;
