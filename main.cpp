@@ -86,12 +86,14 @@ int main(int argc, char *argv[]) {
         cin >> arr[i];
     }
 
-    cout << "Original array" << endl;
+    cout << endl << "Original array" << endl;
     printArray(arr, arrLenght);
+    cout << endl;
 
     cout << endl << "Sorted array" << endl;
-    mergeSort(arr, 0, arrLenght);
+    mergeSort(arr, 0, arrLenght - 1);
     printArray(arr, arrLenght);
+    cout << endl << endl;
 
     return 0;
 }
