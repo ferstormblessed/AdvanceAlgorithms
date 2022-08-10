@@ -75,16 +75,15 @@ void printArray(float arr[], int size) {
 
 int main(int argc, char *argv[]) {
 
+    //Get the length of the array from command-line
     int arrLenght = stoi(argv[1]);
-
-    //cout << "argv[1]: " << arrLenght << endl;
 
     float arr[arrLenght];
 
+    // Fill the array to sort
     for(int i = 0; i < arrLenght; i++){
         int num = 0;
         cin >> arr[i];
-        //cout << arr[i] << endl;
     }
 
     cout << "Original array" << endl;
