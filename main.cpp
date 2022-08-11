@@ -14,7 +14,6 @@
 
 using namespace std;
 
-
 void merge(float arr[], int start, int mid, int end){
     int start2 = mid + 1;
 
@@ -51,6 +50,8 @@ void merge(float arr[], int start, int mid, int end){
 	}
 }
 
+
+//Complexity of O(nlogn)
 void mergeSort(float arr[], int l, int r) {
 
     //check if the subarrays are greater than 1 in length
@@ -83,7 +84,6 @@ int main(int argc, char *argv[]) {
 
     // Fill the array to sort
     for(int i = 0; i < arrLength; i++){
-        //int num = 0;
         cin >> arr[i];
     }
 
