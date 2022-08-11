@@ -19,7 +19,7 @@ void merge(float arr[], int start, int mid, int end){
     int start2 = mid + 1;
 
 	// If the direct merge is already sorted 
-	if (arr[mid] <= arr[start2]) {
+	if (arr[mid] >= arr[start2]) {
 		return;
 	}
 
@@ -28,7 +28,7 @@ void merge(float arr[], int start, int mid, int end){
 	while (start <= mid && start2 <= end) {
 
 		// If element 1 is in right place 
-		if (arr[start] <= arr[start2]) {
+		if (arr[start] >= arr[start2]) {
 			start++;
 		}
 		else {
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 
     // Fill the array to sort
     for(int i = 0; i < arrLength; i++){
-        int num = 0;
+        //int num = 0;
         cin >> arr[i];
     }
 
