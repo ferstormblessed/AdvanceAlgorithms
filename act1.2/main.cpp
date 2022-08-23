@@ -4,52 +4,61 @@
     Salvador Fernando Camacho Hernandez A01634777
     Emilio Octavio Vazquez Flores A01635304
 
-    Miercoles 17 de agosto del 2022
+    Sabado 20 de agosto del 2022
 
 */
 
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 //Dynamic programming
-//Time complexity O(n)
-//Space complexity O(n)
+//Time complexity O(n * m), where n = the change and m = the number of coins
+//Space complexity O(n) 
+void moneyChangeDynamic(int change, int coinDenomination[], int numberCoins){
+    
+    //Declare the array where the solutions are stored
+    int dp[change + 1];
 
-void moneyChangeDynamic(int change, int coinDenomination[], int numberCoins, int coinChange[]){
-    for (int i = numberCoins - 1; i > -1; i--){
-        int currentCoin = coinDenomination[i]; // i.e. 1,2,5,10,20
-        int numberOfCurrCoin = change / currentCoin; // The number of that coin (denomination) for the change
-        coinChange[i] = numberOfCurrCoin;
-        change = change % currentCoin; // the current change after calculate the number of coins of certain denominatio
+    //Fill array with largest possible number (change value)
+    for(int i = 0; i < change + 1; i++){
+        dp[i] = change + 1;
+    }
 
-        if(change == 0){
-            return;
+    //Base case
+    dp[0] = 0;
+
+    //Buttom-up
+    for(int i = 1; i < change + 1; i++){
+        int currentChange = i;
+        for(int j = 0; j < numberCoins; j++){
+            int currentCoin = coinDenomination[j];
+            if(currentChange - currentCoin >= 0){
+                //change in dp if there is a better solution of coins
+                dp[i] = min(dp[currentChange], 1 + dp[currentChange - currentCoin]);            
+            }
         }
     }
+    cout << "Minimum number of coins with Dynamic: " << dp[change] << endl << endl;
 }
 
 //Greedy implementation
-//Time complexity O(1)
-//Space complexity O(1)
+//Time complexity O(n)
+//Space complexity O(n)
+void moneyChangeGreedy(int change, int coinDenomination[], int numberCoins){
+    int numOfCoins = 0;
+    for (int i = numberCoins - 1; i > -1; i--){
+        int currentCoin = coinDenomination[i]; // i.e. 1,2,5,10,20
+        int numberOfCurrCoin = change / currentCoin; // The number of that coin (denomination) for the change
+        numOfCoins += numberOfCurrCoin;
+        change = change % currentCoin; // the current change after calculate the number of coins of certain denominatio
 
-void moneyChangeGreedy(int change, int coinDenomination[], int numberCoins, int coinChange[]){
-    for (int i = numberCoins - 1; i >= 0; i--) {
-        // Find denominations
-        int currCoin = coinDenomination[i];
-        int numberOfCurrCoin = 0;
-        while (change >= currCoin) {
-            change -= currCoin;
-            numberOfCurrCoin++;
+        if(change == 0){
+            cout << "Minimum number of coins with Greedy: " << numOfCoins << endl << endl;
+            return;
         }
-        coinChange[i] = numberOfCurrCoin;
-    }
-}
-
-void printArray(int arr[], int coins[], int size) {
-    for(int i = 0; i < size; i++){
-        cout << "$" << coins[i] << " -> " << arr[i] << endl;
     }
 }
 
@@ -82,28 +91,12 @@ int main(){
 
     int change = denominationToPay - valueProduct;
 
-    //array of number of coins of each denomination for the change /dynamic/
-    int coinsChangeDynamic[numberCoins];
-    for(int i = 0; i < numberCoins; i++){
-        coinsChangeDynamic[i] = 0;
-    }
-    //array of number of coins of each denomination for the change /greedy/
-    int coinsChangeGreedy[numberCoins];
-    for(int i = 0; i < numberCoins; i++){
-        coinsChangeDynamic[i] = 0;
-    }
-
     cout << endl << "Dynamic Implementation" << endl << endl;
-    moneyChangeDynamic(change, coinDenominations, numberCoins, coinsChangeDynamic);
-    cout << "Expected change: $" << change << endl;
-    printArray(coinsChangeDynamic, coinDenominations, numberCoins);
-    cout << endl << endl; 
+    moneyChangeDynamic(change, coinDenominations, numberCoins);
+
 
     cout << endl << "Greedy Implementation" << endl << endl;
-    moneyChangeGreedy(change, coinDenominations, numberCoins, coinsChangeGreedy);
-    cout << "Expected change: $" << change << endl;
-    printArray(coinsChangeGreedy, coinDenominations, numberCoins);
-    cout << endl << endl; 
+    moneyChangeGreedy(change, coinDenominations, numberCoins);
 
     return 0;
 }
