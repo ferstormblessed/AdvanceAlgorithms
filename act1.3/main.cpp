@@ -10,6 +10,7 @@
 #include <iostream>
 #include <queue>
 #include <utility>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -68,19 +69,13 @@ void backtrackingMaze(int **maze, int **solution, int xPosition, int yPosition, 
     if(!solveMaze(maze, solution, xPosition, yPosition, m, n)){
         cout << endl << "Solution not possible" << endl << endl;
     }
+    cout << endl << "Original maze" << endl << endl;
     printMatrix(maze, m, n);
+    cout << endl << "Backtracking algorithm" << endl << endl;
     printMatrix(solution, m, n);
 }
 
-
 void branchBoundMaze(int **maze, int **solutionBnB, int x, int y, int m, int n){
-    // int maze2[m][n];
-
-    // for(int i = 0; i < m; i++){
-    //     for(int j = 0; j < n; j++){
-    //         maze2[i][j] = maze[i][j];
-    //     }
-    // }
 
     queue< pair<int, int> > q;
     pair<int, int> start;
@@ -90,7 +85,6 @@ void branchBoundMaze(int **maze, int **solutionBnB, int x, int y, int m, int n){
 
     while(x <= m - 1 && y <= n - 1 && maze[x][y] == 1){
         maze[x][y] = 0;
-        solutionBnB[x][y] = 1;
 
         pair<int, int> currPos = q.front();
         q.pop();
@@ -99,23 +93,27 @@ void branchBoundMaze(int **maze, int **solutionBnB, int x, int y, int m, int n){
 
         pair<int, int> next;
         
-        cout << "Current position: (" << currX << ", " << currY << ")" << endl;
+        //cout << "Current position: (" << currX << ", " << currY << ")" << endl;
 
+        //go right
         if(isSafeToMove(maze, currX, currY + 1, m, n) && maze[currX][currY + 1] == 1){
             next.first = currX;
             next.second = currY + 1;
             q.push(next);
         }
+        //go down
         if(isSafeToMove(maze, currX + 1, currY, m, n) && maze[currX + 1][currY] == 1){
             next.first = currX + 1;
             next.second = currY;
             q.push(next);
         }
+        //go left
         if(isSafeToMove(maze, currX, currY - 1, m, n) && maze[currX][currY - 1] == 1){
             next.first = currX;
             next.second = currY - 1;
             q.push(next);
         }
+        //go up
         if(isSafeToMove(maze, currX - 1, currY, m, n) && maze[currX - 1][currY] == 1){
             next.first = currX - 1; 
             next.second = currY;
@@ -125,12 +123,10 @@ void branchBoundMaze(int **maze, int **solutionBnB, int x, int y, int m, int n){
         pair<int, int> nextNode = q.front();
         x = nextNode.first;
         y = nextNode.second;
-
-        
     }
-
-
+    cout << endl << "Branch and bound algorithm" << endl << endl;
     printMatrix(solutionBnB, m, n);
+    cout << endl;
 }
 
 
@@ -139,49 +135,21 @@ int main(){
 
     cin >> m;
     cin >> n;
-    m = 4;
-    n = 4;
 
     int **maze = new int*[m];
     int **solution = new int*[m];
-    int **solutionBnB = new int*[m];
-    // queue< pair<int, int> > *queueBnB;
-
-    // pair<int, int> start;
-    // start.first = 0;
-    // start.second = 0;
-    // queueBnB -> push(start);
 
     for(int i = 0; i < m; i++){
         maze[i] = new int[n];
         solution[i] = new int[n];
-        solutionBnB[i] = new int[n];
         for(int j = 0; j < n; j++){
             cin >> maze[i][j];
             solution[i][j] = 0;
-            solutionBnB[i][j] = 0;
         }
     }
 
-    maze[0][0] = 1;
-    maze[0][1] = 0;
-    maze[0][2] = 0;
-    maze[0][3] = 0;
-    maze[1][0] = 1;
-    maze[1][1] = 1;
-    maze[1][2] = 0;
-    maze[1][3] = 1;
-    maze[2][0] = 0;
-    maze[2][1] = 1;
-    maze[2][2] = 0;
-    maze[2][3] = 0;
-    maze[3][0] = 1;
-    maze[3][1] = 1;
-    maze[3][2] = 1;
-    maze[3][3] = 1;
-
-    //backtrackingMaze(maze, solution, 0, 0, m, n);
-    branchBoundMaze(maze, solutionBnB, 0, 0, m, n);
+    backtrackingMaze(maze, solution, 0, 0, m, n);
+    branchBoundMaze(maze, solution, 0, 0, m, n);
 
     return 0;
 }
