@@ -1,0 +1,4 @@
+Note that the ifstream destructor closes our file automatically,  
+which is one of the perks of using this class. 
+If we wanted, we could have added an infile.close() command to the end of the program. 
+This is seen as good practice, but it does not really add any value.
