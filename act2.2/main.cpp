@@ -4,13 +4,12 @@
     Salvador Fernando Camacho Hernandez A01634777
     Emilio Octavio Vazquez Flores A01635304
 
-    Sabado 11 de septiembre del 2022
-
 */
 
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -30,50 +29,38 @@ vector<string> substringArray(string s){
     return arr;
 }
 
-//Time complexity O(n^2)
-//Space complexity O(n)
+//Time complexity O(n log n)
 vector<string> suffixArray(vector<string> v){
-    vector<string> output;
+    //function from algorithm library
+    sort(v.begin(), v.end());
+    
+    return v;
 
-    int leftPtr = 0;
-    int rightPtr = v.size() - 1;
+}
 
-    //we pass through the vector only once
-    while(leftPtr < rightPtr){
-        int pos = 0;
-        string sub1 = v[leftPtr];
-        string sub2 = v[rightPtr];
-        bool compare = true;
-
-        //check which string goes first alphabetically
-        while(!sub1.empty() && !sub2.empty() && compare){
-            //checking by character
-            if(sub1[pos] < sub2[pos]){
-                output.push_back(sub1);
-                leftPtr++;
-                compare = false;
-            }
-            else if(sub1[pos] > sub2[pos]){
-                output.push_back(sub2);
-                rightPtr--;
-                compare = false;
-            }
-            //both strings start with the same letter
-            pos++;
+//Time complexity O(n)
+int findPattern(string subs, vector<string> &v){
+    for(int i = 0; i < v.size(); i++){
+        if(subs == v[i]){
+            return i;
         }
     }
+    //the substring is not part of the original string
+    return -1;
+}
 
-    //last string in the vector
-    if(leftPtr == rightPtr){
-        output.push_back(v[leftPtr]);
+//Time Complexity O(n)
+void toLowerCase(string &s){
+    for(int i = 0; i < s.length(); i++){
+        if(!islower(s[i])){
+            s[i] += 32;
+        }
     }
-
-    return output;
 }
 
 void printVector(vector<string> v){
     for(int i = 0; i < v.size(); i++){
-        cout << i << " | " << v[i] << endl;
+        cout << v[i] << endl;
     }
 }
 
@@ -81,23 +68,35 @@ int main(){
 
     string s = "";
     cin >> s;
+    
+    toLowerCase(s);
 
-    // s = "apple";
+    cout << endl << "Original string: " << s << endl << endl;
 
-    // cout << "string: " << s << endl;
+    cout << "Substring array" << endl << endl;
 
-    cout << "Substring array" << endl;
     vector<string> subArr = substringArray(s);
     printVector(subArr);
 
-    cout << endl << "Suffix array" << endl;
+    cout << endl << "Suffix array" << endl << endl;
 
     vector<string> suffArr = suffixArray(subArr);
     printVector(suffArr);
 
     cout << endl;
 
-    // cout << "comparison e and apple: "<< subArr[3].compare(subArr[0]) << endl;
+    int numSubstrings = 0;
+    cin >> numSubstrings;
+    vector<string> substrings(numSubstrings);
+    for(int i = 0; i < numSubstrings; i++){
+        cin >> substrings[i];
+    }
+
+    cout << "Substring --> Position" << endl << endl;
+    for(int i = 0; i < substrings.size(); i++){
+        cout << substrings[i] << " --> " << findPattern(substrings[i], suffArr) << endl;
+    }
+    cout << endl;
 
     return 0;
 }
