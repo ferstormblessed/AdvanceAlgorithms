@@ -156,6 +156,22 @@ void part1(vector<string> &transmissionFiles, vector<string> &mcodeFiles){
     }
 }
 
+// PARTE 2
+// CODIGO ESPEJEADO
+
+void part2(vector<string> transmissionFiles, vector<string> mcodeFiles){
+    for(int i = 0; i < transmissionFiles.size(); i++){
+        for(int j = 0; j < mcodeFiles.size(); j++){
+             if(transmissionFiles[i].find(mcodeFiles[j]) != -1){
+                int index = transmissionFiles[i].find(mcodeFiles[j]);
+                cout << "mcode" << j + 1 << " en transmissions" << i + 1 << "\n";
+                cout << "inicio: " << index << "\n";
+                cout << "fin: " << index + mcodeFiles[j].length() << "\n\n";
+            }
+        }
+    }
+}
+
 // PARTE 3 
 // LONGEST COMMON SUBSTRING BETWEEN TRANSMISSION 1 AND TRANSMISSION 2
 
@@ -209,7 +225,9 @@ int main(){
     mcodeFiles.push_back(mcode3_data);
     part1(transmissionFiles, mcodeFiles);
 
-    // //PARTE 2
+    // PARTE 2
+    cout << endl << "PARTE 2" << endl << endl;
+    part2(transmissionFiles, mcodeFiles);
 
     //PARTE 3
     cout << endl <<  "PARTE 3" << endl;
