@@ -159,6 +159,7 @@ void part1(vector<string> &transmissionFiles, vector<string> &mcodeFiles){
 // PARTE 2
 // CODIGO ESPEJEADO
 
+//Time Complexity O(m * n), where m = num of transmission files and n = num of mcode files
 void part2(vector<string> transmissionFiles, vector<string> mcodeFiles){
     for(int i = 0; i < transmissionFiles.size(); i++){
         for(int j = 0; j < mcodeFiles.size(); j++){
