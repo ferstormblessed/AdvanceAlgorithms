@@ -1,7 +1,4 @@
-2
-bird
-africa
-3
-apple
-africa
-lindon
+1
+hulk
+1
+hulk
