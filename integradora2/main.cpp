@@ -129,11 +129,11 @@ vector<vector<int> > floydWarshall(vector<vector<int> > &matrix){
 //Space Complexity O(n^2)
 vector<char> tsp(vector<vector<int> > &graph, int s) {
     // store path
-    vector<char> path(N);
+    vector<char> path;
     //assign a letter to each city
-    vector<char> letter_cities(N);
+    vector<char> letter_cities;
     for(int i = 0; i < N; i++){
-        letter_cities[i] = i + 65;
+        letter_cities.push_back( i + 65);
     }
     // store all vertex apart from source vertex
     vector<int> vertex;
@@ -191,6 +191,41 @@ int max_flow(vector<vector<int> > &graph){
     return distance[N - 1];
 }
 
+struct Point
+{
+    int x;
+    int y;
+};
+
+//Time and space complexity O(1)
+float distance(Point p1, Point p2){
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y , 2) * 1.0);
+}
+
+//Time Complexity O(n^2)
+//Space Complexity O(n)
+vector<int> minDistance(vector<Point> &points, Point target){
+    vector<float> distances;
+
+    for(int i = 0; i < points.size(); i++){
+        float dis = distance(points[i], target);
+        distances.push_back(dis);
+    }
+
+    float min = distances[0];
+    int central = 0;
+    for(int i = 0; i < distances.size(); i++){
+        if(distances[i] < min && distances[i] > 0){
+            min = distances[i];
+            central = i;
+        }
+    }
+    vector<int> res;
+    res.push_back(min);
+    res.push_back(central);
+    return res;
+}
+
 int main(){
 
     // LEER INPUT
@@ -205,36 +240,28 @@ int main(){
             cin >> m_distance[i][j];
             if(m_distance[i][j] == 0){
                 m_distance[i][j] = INF;  
-                // cout << "INF" << " ";
             }
-            // else{
-            //     cout << m_distance[i][j] << " ";
-            // }
-            // cout << m_distance[i][j] << " ";
-
         }
-        // cout << endl;
     }
     //nxn matrix that represents the max data flow between colonies
     vector<vector<int> > m_data_flow(N, vector<int>(N));
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
             cin >> m_data_flow[i][j];
-            cout << m_data_flow[i][j] << " ";
         }
-        cout << endl;
     }
-    //coordenates of the energy/internet central
-    vector<pair<int, int> > central_coordinates(N);
-    for(int i = 0; i < N; i++){
-        pair<int, int> p;
-        cin >> p.first;
-        cin >> p.second;
-        central_coordinates.push_back(p);
-        // cout << p.first << ", " << p.second << endl;
+    //coordenates of the energy/internet central y target de la nueva contratacion en pos[n]
+    vector<Point> central_coordinates(N + 1);
+    for(int i = 0; i < N + 1; i++){
+        Point p;
+        cin >> p.x;
+        cin >> p.y;
+        central_coordinates[i] = p;
+        cout << p.x << ", " << p.y << endl;
     }
 
     // PARTE 1
+
     cout << endl << endl << "1. Forma de cablear las colonias con fibra" << endl << endl;
     for(int i = 0; i < N; i++){
         dijkstra(i, m_distance);
@@ -244,19 +271,6 @@ int main(){
 
     cout << endl << endl;
     vector<vector<int> > floyd = floydWarshall(m_distance);
-    // for(int i = 0; i < N; i++){
-    //     for(int j = 0; j < N; j++){
-    //         if(floyd[i][j] >= INF){
-    //             cout << " INF ";
-    //         }
-    //         else{
-    //             cout << " " << floyd[i][j] << " ";
-    //         }
-    //     }
-    //     cout << endl;
-    // }
-
-    // cout << endl << endl;
 
     vector<char> ruta = tsp(floyd, 0);
     cout << "2. Ruta: ";
@@ -266,8 +280,14 @@ int main(){
 
     // PARTE 3
     cout << endl << endl;
-    cout << "3. Max flow: " << max_flow(m_data_flow) << endl;
+    cout << "3. Max flow: " << max_flow(m_data_flow);
 
+    // PARTE 4
+    cout << endl << endl;
+    Point target = central_coordinates[N];
+    central_coordinates.pop_back();
+    vector<int> dist_central = minDistance(central_coordinates, target);
+    cout << "4. Nearest central from (" << target.x << ", " << target.y << "): (" << central_coordinates[dist_central[1]].x << ", " << central_coordinates[dist_central[1]].y << ")" << endl;
     cout << endl << endl;
 
     return 0;
