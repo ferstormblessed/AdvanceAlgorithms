@@ -43,6 +43,22 @@ int getMin(vector<int> &dist , vector<bool> &visited){
 
 //Time Complexity O(n)
 //Space Complexity O(1)
+int getMax(vector<int> &flow, vector<bool> &visited){
+    int key = 0; 
+    int max = 0; 
+
+    for(int i = 0; i < N; i++){
+        if(!visited[i] && flow[i] > max){
+            max = flow[i]; 
+            key = i; 
+        }
+    }
+
+    return key ; 
+}
+
+//Time Complexity O(n)
+//Space Complexity O(1)
 void showDistances(vector<int> &distance, int node){
     //assign a letter to each city
     vector<char> letter_cities(N);
@@ -153,38 +169,27 @@ vector<char> tsp(vector<vector<int> > &graph, int s) {
     // return min_path;
 }
 
-//Time Complexity O(n^3)
-//Space Complexity O(n^2)
-int max_flow(vector<vector<int> > &graph, int s) {
-    // store all vertex apart from source vertex
-    vector<int> vertex;
-    for (int i = 0; i < N; i++){
-        // if (i != s){
-        //     vertex.push_back(i);
-        // }
-        vertex.push_back(i);
-    }   
-    // store minimum weight Hamiltonian Cycle.
-    int min_path = 0;
-    do {
-        // store current Path weight(cost)
-        int current_pathweight = 0;
-        // compute current path weight
-        int k = s;
-        for (int i = 0; i < vertex.size(); i++) {
-            current_pathweight += graph[k][vertex[i]];
-            k = vertex[i];
-        }
-        current_pathweight += graph[k][s];
-        // update minimum
-        min_path = max(min_path, current_pathweight);
- 
-    } 
-    while (next_permutation(vertex.begin(), vertex.end()));
- 
-    return min_path;
-}
+//Time Complexity O(n^2)
+//Space Complexity O(n), if we dont count the matrix the function gets as a parameter. If we count it space complexity is O(n^2)
+int max_flow(vector<vector<int> > &graph){
+    vector<int> distance (N, 0);
+    vector<bool> visited (N, false);
 
+    for(int i = 0; i < N; i++){
+        //get the farthest node also current node
+        int farthest = getMin(distance, visited);
+        //mark it as visited
+        visited[farthest] = true;
+        //get the distance from the current node to all the nodes
+        for(int j = 0; j < N; j++){
+            //check that we havent visited the node and the node has a connection and the distance is greater than previous distance
+            if(!visited[j] && (distance[farthest] + graph[farthest][j]) > distance[j]) {
+                distance[j] = distance[farthest] + graph[farthest][j]; 
+            }
+        }
+    }
+    return distance[N - 1];
+}
 
 int main(){
 
@@ -261,9 +266,7 @@ int main(){
 
     // PARTE 3
     cout << endl << endl;
-    cout << "3. Flujo maximo entre el nodo inicial y nodo final:" << max_flow(m_data_flow, 0) << endl;
-
-
+    cout << "3. Max flow: " << max_flow(m_data_flow) << endl;
 
     cout << endl << endl;
 
