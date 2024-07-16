@@ -1,5 +1,5 @@
 /*
-    Actividad 5.3 Implementación backtracking con poda pesada
+    Actividad 5.3 Implementación backtracking con poda pesada: Queen's problem
 
     Salvador Fernando Camacho Hernandez A01634777
     Emilio Octavio Vazquez FLores A01635304
